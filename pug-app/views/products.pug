@@ -1,0 +1,46 @@
+doctype html
+html
+    head
+        title= title
+        meta(charset='UTF-8')
+        style.
+            table {
+                width: 70%;
+                margin: 20px auto;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                padding: 10px;
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+
+            th {
+                background-color: #f4f4f4;
+            }
+
+            .available {
+                color: green;
+                font-weight: bold;
+            }
+
+            .unavailable {
+                color: red;
+                font-weight: bold;
+            }
+
+
+    body
+        h1(style="text-align: center")= title
+
+        table
+            thead
+                tr
+                    th Назва
+                    th Ціна
+            tbody
+                each product in products
+                    tr(class=product.available ? 'available' : 'unavailable')
+                        td= product.name
+                        td= product.price

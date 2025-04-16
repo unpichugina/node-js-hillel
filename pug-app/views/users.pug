@@ -1,0 +1,37 @@
+doctype html
+html
+    head
+        title= title
+        meta(charset='UTF-8')
+        style.
+            table {
+                width: 70%;
+                margin: 20px auto;
+                border-collapse: collapse;
+            }
+
+            th, td {
+                padding: 10px;
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+
+            th {
+                background-color: #f4f4f4;
+            }
+
+    body
+        h1(style="text-align: center")= title
+
+        table
+            thead
+                tr
+                    th Ім’я
+                    th Вік
+                    th Електронна пошта
+            tbody
+                each user in users
+                    tr
+                        td= user.name
+                        td= user.age
+                        td= user.email
