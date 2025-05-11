@@ -9,7 +9,7 @@ let currentIndex = 0;
 
 backendPorts.forEach((port) => {
     const backendApp = express();
-    backendApp.get((req, res) => {
+    backendApp.get('/', (req, res) => {
         res.send(`Привіт від бекенд-сервера на порту ${port}`);
     });
     backendApp.listen(port, () => {

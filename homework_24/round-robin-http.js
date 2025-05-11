@@ -9,7 +9,7 @@ const loadBalancer = http.createServer((req, res) => {
     const target = ports[current];
     current = (current + 1) % ports.length;
 
-    proxy.web(req, res, {target: `http://localhost:${target.port}`}, (e) => {
+    proxy.web(req, res, {target: `http://localhost:${target}`}, (e) => {
         res.writeHead(502);
         res.end('Bad Gateway');
     });
@@ -19,10 +19,10 @@ loadBalancer.listen(8080, () => {
     console.log('Load balancer працює на http://localhost:8080');
 });
 
-ports.forEach((server, i) => {
+ports.forEach((port, i) => {
     http.createServer((req, res) => {
         res.end(`Відповідь від сервера ${i + 1}`);
-    }).listen(server.port, () => {
-        console.log(`Бекенд-сервер ${i + 1} працює за адресою http://localhost:${server.port}`);
+    }).listen(port, () => {
+        console.log(`Бекенд-сервер ${i + 1} працює за адресою http://localhost:${port}`);
     });
 });
