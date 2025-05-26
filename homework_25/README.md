@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Hotel Booking App
 
 This project contains:
 - **Frontend** with React (`frontend/`)
