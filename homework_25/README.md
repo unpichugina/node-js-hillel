@@ -1,156 +1,111 @@
-# Hotel Booking System API (MySQL)
+# Getting Started with Create React App
 
-This project is a backend API for a hotel booking system, built with Node.js, Express, and MySQL. 
-It supports guest registration, room booking, and availability checks.
-
----
-
-## Description
-
-This RESTful API is designed to handle hotel operations including:
-
-- Adding new guests
-- Booking rooms
-- Viewing available rooms
-- Calculating hotel revenue
-
-Database schema includes:
-- `Guests`
-- `Rooms`
-- `Bookings`
+This project contains:
+- **Frontend** with React (`frontend/`)
+- **Backend** with Node.js + Express (`backend/`)
+- JWT authentication
+- Guest, room, and booking management
+- Role-based access (`user` / `admin`)
 
 ---
 
-## Tech Stack
+## Quick Start
 
-- Node.js
-- Express.js
-- MySQL
-- mysql2
-- dotenv
-- Docker & docker-compose
-
----
-
-## Getting Started
+> Requires **Node.js 18+**  
+> (Node 23+ may cause issues with `mysql2`)
 
 ### 1. Clone the repository
-
 ```bash
-git clone https://github.com/unpichugina/node-js-hillel.git
-cd node-js-hillel/homework_25
+git clone ...
+cd homework_25
 ```
 
 ### 2. Install dependencies
-
 ```bash
-npm install
+cd frontend && npm install
+cd ../backend && npm install
 ```
 
-### 3. Configure environment variables
+### 3. Start MySQL (via Docker or manually)
 
-```bash
-cp .env.example .env
-```
-
-Edit `.env` file as needed:
-
-```
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=yourpassword
-DB_NAME=hotel
-```
-
----
-
-## Docker Setup
-
-If you prefer Docker:
-
+> With Docker:
 ```bash
 docker-compose up -d
 ```
 
-This will start a MySQL container with the configured database.
-
-To seed the database:
-
-```bash
-docker exec -i <container_name> mysql -uroot -p<password> hotel < dump.sql
-docker exec -i <container_name> mysql -uroot -p<password> hotel < dump_data.sql
-```
+Or create the `hotel_booking` database manually and apply `dump.sql`
 
 ---
 
-## Running the App
+## Run frontend + backend simultaneously
 
+In the root directory:
 ```bash
+npm install   # installs concurrently
 npm run dev
 ```
 
-Server will run on `http://localhost:5000`
-
----
-
-## Sample SQL Queries
-
-### Available rooms on 2025-04-20
-
-```sql
-SELECT * FROM rooms r
-WHERE r.id NOT IN (
-  SELECT room_id FROM bookings
-  WHERE '2025-04-20' BETWEEN check_in AND check_out
-);
-```
-
-### Add a new guest
-
-```sql
-INSERT INTO guests (name, email, phone)
-VALUES ('John Doe', 'john@example.com', '123456789');
-```
-
-### Book a room for a guest
-
-```sql
-INSERT INTO bookings (guest_id, room_id, check_in, check_out)
-VALUES (1, 2, '2025-04-20', '2025-04-25');
-```
-
-### Calculate revenue for a month
-
-```sql
-SELECT SUM(price) AS monthly_revenue
-FROM bookings
-JOIN rooms ON bookings.room_id = rooms.id
-WHERE MONTH(check_in) = 4 AND YEAR(check_in) = 2025;
-```
+- React: http://localhost:3001
+- API: http://localhost:3000
 
 ---
 
 ## Project Structure
 
 ```
-homework_25/products
-├── server.js
-├── dump.sql
-├── dump_data.sql
-├── docker-compose.yml
-├── .env.example
-├── .env
-├── package.json
-└── db-diagram.png
+homework_25/
+├── frontend/          # React SPA
+├── backend/           # Node.js + Express API
+├── package.json       # shared scripts (npm run dev)
+└── docker-compose.yml # optional
 ```
 
 ---
 
-## License
+## Authentication
 
-This project is licensed under the MIT License.
+- `/auth/register` — register
+- `/auth/login` — login, returns `accessToken`
+- Private routes are protected by middleware
 
-## Author
+### Roles:
+- `user`: can create/view their bookings
+- `admin`: can see all bookings, income summary
 
-- [GitHub](https://github.com/unpichugina)
+---
+
+## 🔗 API Endpoints
+
+| Method | Route                | Role    | Description                |
+|--------|----------------------|---------|----------------------------|
+| GET    | `/rooms/available`   | user    | check available rooms      |
+| POST   | `/bookings`          | user    | create a booking           |
+| GET    | `/reviews`           | user    | all	get all reviews        |
+| POST   | `/reviews`           | user    | add a new review (with JWT)|
+| GET    | `/bookings/my`       | user    | view my bookings           |
+| GET    | `/income`            | admin   | view total income          |
+
+---
+
+## `.env` example (for `backend/`)
+
+```
+MYSQL_HOST=localhost
+MYSQL_USER=hotel_user
+MYSQL_PASSWORD=hotel_password
+MYSQL_DATABASE=hotel_booking
+
+ACCESS_TOKEN_SECRET=your_access_secret
+REFRESH_TOKEN_SECRET=your_refresh_secret
+```
+
+---
+
+## Useful Scripts
+
+| Command                | Description                   |
+|------------------------|-------------------------------|
+| `npm start` (frontend) | Starts React app              |
+| `npm start` (backend)  | Starts Node.js API            |
+
+---
