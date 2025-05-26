@@ -1,0 +1,13 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+input, button {
+  padding: 8px;
+  font-size: 16px;
+}
+button {
+  cursor: pointer;
+}
